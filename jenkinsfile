@@ -1,0 +1,26 @@
+node ('MAVEN') {
+
+	stage('SCM'){
+	git 'https://github.com/wakaleo/game-of-life.git'
+}
+
+	stage('BUILD'){
+
+	sh 'mvn package'
+
+	}
+
+	stage ('Test Results and artfacts') {
+	
+	junit 'gameoflife-web/target/surefire-reports/*.xml'
+	archiveArtifacts artifacts: 'gameoflife-web/target/*.war', followSymlinks: false
+}
+
+	stage ('OUTPUT'){
+
+	sh 'echo "trying build on $gol_branch branch"'
+	sh 'echo "workspace is $WORKSPACE"'
+	sh 'echo "jenkins home directory is $JENKINS_HOME"'
+	}
+}
+
